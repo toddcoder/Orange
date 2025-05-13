@@ -7,6 +7,7 @@ using Block = Orange.Library.Values.Block;
 using static Orange.Library.Parsers.ExpressionParser;
 using static Orange.Library.Parsers.Stop;
 using static Standard.Types.Maybe.MaybeFunctions;
+using static Standard.Types.Monads.MonadFunctions;
 
 namespace Orange.Library.Parsers
 {
