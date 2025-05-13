@@ -9,7 +9,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>OrangePlayground</RootNamespace>
     <AssemblyName>OrangePlayground</AssemblyName>
-    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <TargetFrameworkProfile />
@@ -42,27 +42,27 @@
     </Reference>
     <Reference Include="Standard.Computer, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>C:\Enterprise\Standard7\Standard.Computer.dll</HintPath>
+      <HintPath>..\References\Standard.Computer.dll</HintPath>
     </Reference>
     <Reference Include="Standard.Configurations">
-      <HintPath>C:\Enterprise\Standard7\Standard.Configurations.dll</HintPath>
+      <HintPath>..\References\Standard.Configurations.dll</HintPath>
     </Reference>
     <Reference Include="Standard.ObjectGraphs, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>C:\Enterprise\Standard7\Standard.ObjectGraphs.dll</HintPath>
+      <HintPath>..\References\Standard.ObjectGraphs.dll</HintPath>
     </Reference>
     <Reference Include="Standard.Types, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>C:\Enterprise\Standard7\Standard.Types.dll</HintPath>
+      <HintPath>..\References\Standard.Types.dll</HintPath>
     </Reference>
     <Reference Include="Standard.WinForms">
-      <HintPath>C:\Enterprise\Standard7\Standard.WinForms.dll</HintPath>
+      <HintPath>..\References\Standard.WinForms.dll</HintPath>
     </Reference>
     <Reference Include="Standard.WinForms.Consoles">
-      <HintPath>C:\Enterprise\Standard7\Standard.WinForms.Consoles.dll</HintPath>
+      <HintPath>..\References\Standard.WinForms.Consoles.dll</HintPath>
     </Reference>
     <Reference Include="Standard.WinForms.Documents">
-      <HintPath>C:\Enterprise\Standard7\Standard.WinForms.Documents.dll</HintPath>
+      <HintPath>..\References\Standard.WinForms.Documents.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />

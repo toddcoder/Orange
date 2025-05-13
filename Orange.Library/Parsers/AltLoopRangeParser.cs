@@ -12,7 +12,7 @@ namespace Orange.Library.Parsers
 {
    public class AltLoopRangeParser : Parser
    {
-      FreeParser freeParser;
+      protected FreeParser freeParser;
 
       public AltLoopRangeParser()
          : base($"^ /(|sp|) /'(' /({REGEX_VARIABLE}) /(/s* '<-' /s*)") => freeParser = new FreeParser();
@@ -36,7 +36,9 @@ namespace Orange.Library.Parsers
                index = freeParser.Position;
                var pIncrement = GetExpression(source, index, Comma());
                if (!pIncrement.If(out increment, out index))
+               {
                   return null;
+               }
 
                if (freeParser.Scan(source, index, "^ |sp| ')'"))
                {
@@ -44,7 +46,9 @@ namespace Orange.Library.Parsers
                   index = freeParser.Position;
                }
                else
+               {
                   return null;
+               }
             }
             else
             {
@@ -59,7 +63,9 @@ namespace Orange.Library.Parsers
                   increment = builder.Block;
                }
                else
+               {
                   return null;
+               }
             }
 
             overridePosition = index;

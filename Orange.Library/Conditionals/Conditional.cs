@@ -1,4 +1,5 @@
-﻿using Orange.Library.Patterns;
+﻿using System.Linq;
+using Orange.Library.Patterns;
 using Orange.Library.Values;
 using Standard.Types.Strings;
 

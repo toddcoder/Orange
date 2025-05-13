@@ -1,7 +1,7 @@
 ﻿using Orange.Library.Values;
 using Orange.Library.Verbs;
 using Standard.Types.Collections;
-using Standard.Types.Maybe;
+using Standard.Types.Monads;
 
 namespace Orange.Library
 {
@@ -9,11 +9,11 @@ namespace Orange.Library
    {
       public static Compiler CompilerState { get; set; } = new Compiler();
 
-      long objectID;
-      Hash<string, UserDefinedOperator> operators;
-      Hash<string, Trait> traits;
-      Hash<string, Class> classes;
-      string lastClassName;
+      protected long objectID;
+      protected Hash<string, UserDefinedOperator> operators;
+      protected Hash<string, Trait> traits;
+      protected Hash<string, Class> classes;
+      protected string lastClassName;
 
       public Compiler()
       {

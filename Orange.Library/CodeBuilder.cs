@@ -4,7 +4,7 @@ using Orange.Library.Parsers;
 using Orange.Library.Values;
 using Orange.Library.Verbs;
 using Standard.Types.Enumerables;
-using Standard.Types.Maybe;
+using Standard.Types.Monads;
 using static Orange.Library.Managers.ExpressionManager;
 using static Orange.Library.Values.Nil;
 using static Orange.Library.Values.Object;
@@ -76,12 +76,16 @@ namespace Orange.Library
 
          var checker = new LimitChecker(index, block);
          if (checker.Exceeds(index, out var verb))
+         {
             return false;
+         }
 
          if (PushVariable(verb, out name))
          {
             if (checker.Exceeds(ref index, out verb))
+            {
                return false;
+            }
 
             if (verb is Invoke invoke)
             {
@@ -123,7 +127,9 @@ namespace Orange.Library
          {
             var verb = block.AsAdded[i];
             if (verb is End)
+            {
                return builder.Block;
+            }
 
             index = i;
             builder.Verb(verb);
@@ -139,7 +145,9 @@ namespace Orange.Library
          {
             var verb = block.AsAdded[i];
             if (verb is End)
+            {
                return;
+            }
 
             index = i;
             builder.Verb(verb);
@@ -153,7 +161,9 @@ namespace Orange.Library
             var iBlock = innerBlock;
             var modified = true;
             while (modified)
+            {
                iBlock = DownToBlock(iBlock, out modified);
+            }
 
             return iBlock;
          }
@@ -178,11 +188,15 @@ namespace Orange.Library
          if (source is Block block)
          {
             if (block.Count != 0 && block.Count != 1)
+            {
                return source;
+            }
 
             var value = PushValue<Value>(block.AsAdded[0]);
             if (value.IsSome)
+            {
                return value.Value;
+            }
          }
 
          return source;
@@ -286,7 +300,9 @@ namespace Orange.Library
          : this()
       {
          foreach (var verb in block.AsAdded)
+         {
             Verb(verb);
+         }
       }
 
       public override string ToString() => block.AsAdded.Listify(" ");
@@ -295,7 +311,10 @@ namespace Orange.Library
          bool readOnly = false, bool lazy = false)
       {
          if (defaultValue == null)
+         {
             defaultValue = "";
+         }
+
          var defaultValueBlock = defaultValue.Pushed;
          parameterList.Add(new Parameter(name, defaultValueBlock, visibility, readOnly, lazy));
       }
@@ -305,7 +324,9 @@ namespace Orange.Library
       public void Parameters(Parameters parameters)
       {
          foreach (var parameter in parameters.GetParameters())
+         {
             parameterList.Add(parameter);
+         }
       }
 
       public Parameters Parameters()
@@ -340,7 +361,9 @@ namespace Orange.Library
       {
          prefixArguments();
          foreach (var verb in argumentBlock.AsAdded)
+         {
             argumentsBlock.Add(verb);
+         }
       }
 
       public void ValueAsArgument(Value value)
@@ -352,7 +375,9 @@ namespace Orange.Library
       void prefixArguments()
       {
          if (argumentsBlock.Count > 0)
+         {
             argumentsBlock.Add(new AppendToArray());
+         }
       }
 
       public void VariableAsArgument(string variableName)
@@ -472,21 +497,30 @@ namespace Orange.Library
          bool optional = false)
       {
          if (arguments == null)
+         {
             arguments = new Arguments();
+         }
+
          block.Add(new SendMessage(message, arguments, inPlace, registerCall, optional));
       }
 
       public void SendMessageToSelf(string message, Arguments arguments = null)
       {
          if (arguments == null)
+         {
             arguments = new Arguments();
+         }
+
          block.Add(new SendMessageToSelf(message, arguments));
       }
 
       public void SendMessageToClass(string message, Arguments arguments = null)
       {
          if (arguments == null)
+         {
             arguments = new Arguments();
+         }
+
          block.Add(new SendMessageToClass(message, arguments));
       }
 
@@ -494,7 +528,10 @@ namespace Orange.Library
          VerbPresidenceType verbPresidenceType = VerbPresidenceType.SendMessage)
       {
          if (arguments == null)
+         {
             arguments = new Arguments();
+         }
+
          block.Add(new SendMessageToField(fieldName, message, arguments, verbPresidenceType));
       }
 
@@ -516,7 +553,9 @@ namespace Orange.Library
             if (innerBlock.Count > 0)
             {
                if (innerBlock[0] is Push push2 && push2.Value is Thunk thunk)
+               {
                   expression = thunk.Block;
+               }
             }
             else
             {
@@ -525,7 +564,9 @@ namespace Orange.Library
             }
 
             if (push1.Value.Type == Values.Value.ValueType.Thunk)
+            {
                expression = ((Thunk)push1.Value).Block;
+            }
          }
 
          expression.Expression = true;
@@ -550,7 +591,9 @@ namespace Orange.Library
       public void Inline(Block verbs)
       {
          foreach (var aVerb in verbs.AsAdded)
+         {
             block.Add(aVerb);
+         }
       }
 
       public void Inline(CodeBuilder builder) => Inline(builder.Block);
@@ -558,14 +601,21 @@ namespace Orange.Library
       public void Add(Value value)
       {
          if (value == null || value.IsNil)
+         {
             return;
+         }
 
          if (value is Block aBlock)
          {
             if (aBlock.Expression)
+            {
                Value(value);
+            }
             else
+            {
                Inline(aBlock);
+            }
+
             return;
          }
 
@@ -582,17 +632,24 @@ namespace Orange.Library
       {
          var count = block.Count;
          if (count == 0)
+         {
             return;
+         }
 
          var index = count - 1;
          if (block.AsAdded[index] is IEnd)
+         {
             block.RemoveAt(index);
+         }
       }
 
       public void Case(Block comparisand, Block result, Block condition = null)
       {
          if (condition == null)
+         {
             condition = new Values.Boolean(true).Pushed;
+         }
+
          Verb(new CaseExecute(comparisand, result, false, condition));
       }
 
@@ -679,8 +736,12 @@ namespace Orange.Library
       public void Copy(Block sourceBlock, int index)
       {
          if (index < sourceBlock.Count)
+         {
             for (var i = index; i < sourceBlock.Count; i++)
+            {
                block.Add(sourceBlock.AsAdded[i]);
+            }
+         }
       }
 
       public bool IsEmpty => block.Count == 0;
@@ -692,7 +753,9 @@ namespace Orange.Library
             var result = new Block();
             var start = block.Count - 1;
             if (block[start] is End)
+            {
                return null;
+            }
 
             for (var i = start; i >= 0; i--)
             {
@@ -700,7 +763,9 @@ namespace Orange.Library
                if (verb is End)
                {
                   for (var j = i + 1; j < start; j++)
+                  {
                      result.Add(block.AsAdded[i]);
+                  }
 
                   return result;
                }
@@ -714,7 +779,9 @@ namespace Orange.Library
       {
          var start = block.Count - 1;
          if (block.AsAdded[start] is End)
+         {
             return;
+         }
 
          for (var i = start; i >= 0; i--)
          {
@@ -722,7 +789,9 @@ namespace Orange.Library
             if (verb is End)
             {
                for (var j = start; j > i; j--)
+               {
                   block.RemoveAt(j);
+               }
 
                return;
             }
@@ -734,7 +803,9 @@ namespace Orange.Library
       public Verb PopLastVerb()
       {
          if (block.Count == 0)
+         {
             return null;
+         }
 
          var index = block.Count - 1;
          var verb = block.AsAdded[index];
@@ -750,7 +821,9 @@ namespace Orange.Library
       public Verb Shift()
       {
          if (block.Count == 0)
+         {
             return null;
+         }
 
          var verb = block.AsAdded[0];
          block.RemoveAt(0);
@@ -765,9 +838,14 @@ namespace Orange.Library
       public void AddArrayElement(Value value)
       {
          if (comma)
+         {
             block.Add(new AppendToArray());
+         }
          else
+         {
             comma = true;
+         }
+
          Value(value);
       }
 
